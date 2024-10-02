@@ -1,6 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
+import { FiCamera } from "react-icons/fi";
+import { registerUser } from "../../api/authApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [image, setImage] = useState(null);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("confirmPassword", confirmPassword);
+    if (image) {
+      formData.append("profilePic", image);
+    }
+
+    try {
+      const response = await registerUser(formData);
+      console.log(response);
+      toast.success(response.data.message || "Registration success");
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration failed:", error.response.data.message);
+      toast.error(error.response.data.message || "Registration failed");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
@@ -8,90 +49,86 @@ const Register = () => {
           <div>
             <img
               src="https://drive.google.com/uc?export=view&id=1MFiKAExRFF0-2YNpAZzIu1Sh52J8r16v"
-              alt="Register Logo "
+              alt="Register Logo"
               className="w-mx-auto"
             />
           </div>
           <div className="mt-6 flex flex-col items-center">
-            <div className="w-full flex-1 mt-8">
-              {/* <div className="flex flex-col items-center">
-                <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-green-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
-                  <div className="bg-white p-2 rounded-full">
-                    <svg className="w-4" viewBox="0 0 533.5 544.3">
-                      <path
-                        d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
-                        fill="#4285f4"
-                      />
-                      <path
-                        d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
-                        fill="#34a853"
-                      />
-                      <path
-                        d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
-                        fill="#fbbc04"
-                      />
-                      <path
-                        d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
-                        fill="#ea4335"
-                      />
-                    </svg>
-                  </div>
-                  <span className="ml-4">Sign In with Google</span>
-                </button>
-              </div> */}
-
-              {/* <div className="my-12 border-b text-center">
-                <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                  Or sign In with Cartesian E-mail
-                </div>
-              </div> */}
-
-              <div className="mx-auto max-w-xs">
-                <input
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                  type="text"
-                  placeholder="Username"
+            {/* Image Upload Section */}
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300">
+                <img
+                  src={
+                    image
+                      ? image
+                      : "https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=mail@ashallendesign.co.uk"
+                  }
+                  alt="Profile"
+                  className="w-full h-full object-cover cursor-pointer transform transition duration-500 hover:scale-125 hover:flex justify-center items-center"
                 />
-                <input
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="email"
-                  placeholder="Email"
-                />
-                <input
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="password"
-                  placeholder="Password"
-                />
-                <input
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="password"
-                  placeholder="Confirm Password"
-                />
-                <button className="mt-5 tracking-wide font-semibold bg-green-400 text-white-500 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                  <svg
-                    className="w-6 h-6 -ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="8.5" cy="7" r="4" />
-                    <path d="M20 8v6M23 11h-6" />
-                  </svg>
-                  <span className="ml-">Register</span>
-                </button>
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  Already have an account?{" "}
-                  <a
-                    href="/login"
-                    className="border-b border-gray-500 border-dotted text-indigo-400"
-                  >
-                    Login
-                  </a>
-                </p>
               </div>
+              <label htmlFor="imageUpload">
+                <div className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg cursor-pointer">
+                  <FiCamera className="text-gray-700 w-2 h-2" />
+                </div>
+              </label>
+              <input
+                id="imageUpload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </div>
+
+            <div className="w-full flex-1 mt-8">
+              <form onSubmit={handleSubmit}>
+                <div className="mx-auto max-w-xs">
+                  <input
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="text"
+                    placeholder="Username"
+                  />
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    type="email"
+                    placeholder="Email"
+                  />
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    type="password"
+                    placeholder="Password"
+                  />
+                  <input
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                    type="password"
+                    placeholder="Confirm Password"
+                  />
+                  <button
+                    className="mt-5 tracking-wide font-semibold bg-green-400 text-white-500 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    type="submit"
+                  >
+                    <span className="ml-">Register</span>
+                  </button>
+                  <p className="mt-6 text-xs text-gray-600 text-center">
+                    Already have an account?{" "}
+                    <a
+                      href="/login"
+                      className="border-b border-gray-500 border-dotted text-indigo-400"
+                    >
+                      Login
+                    </a>
+                  </p>
+                </div>
+              </form>
             </div>
           </div>
         </div>
