@@ -1,10 +1,17 @@
-import React from 'react'
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
-    <div className="text-3xl font-bold underline">Chat App</div>
-  )
-}
+    <>
+      <Toaster />
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
+};
 
-export default App
+export default App;
