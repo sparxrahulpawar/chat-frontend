@@ -13,6 +13,7 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  // handle Image upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -20,6 +21,7 @@ const Register = () => {
     }
   };
 
+  // Handle register
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();

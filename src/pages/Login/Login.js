@@ -9,6 +9,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // Handle login
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -3,6 +3,8 @@ import App from "../App";
 import AuthLayout from "../layout/AuthLayout";
 import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
+import ChatLayout from "../layout/ChatLayout";
+import Message from "../pages/Message/Message";
 
 const router = createBrowserRouter([
   {
@@ -25,16 +27,16 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
-    //   {
-    //     path: "",
-    //     element: <Home />,
-    //     children: [
-    //       {
-    //         path: ":userId",
-    //         element: <MessagePage />,
-    //       },
-    //     ],
-    //   },
+      {
+        path: "chat", // Define the chat route
+        element: <ChatLayout />, // Use ChatLayout for chat routes
+        children: [
+          {
+            path: ":userId", // Dynamic route for user-specific messages
+            element: <Message />, // Use Home component for user-specific messages
+          },
+        ],
+      },
     ],
   },
 ]);

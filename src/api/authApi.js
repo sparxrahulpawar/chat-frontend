@@ -1,6 +1,6 @@
 import axiosInstance from "../services/axiosInterceptor";
 
-// Example API call using the Axios instance
+// Register API call Axios instance
 export const registerUser = async (userData) => {
   try {
     const response = await axiosInstance.post("/auth/register", userData, {
@@ -15,6 +15,7 @@ export const registerUser = async (userData) => {
   }
 };
 
+// Login API call Axios instance
 export const loginUser = async (userData) => {
   try {
     const response = await axiosInstance.post("/auth/login", userData, {
