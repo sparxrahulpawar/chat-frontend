@@ -4,9 +4,14 @@ import MessageInputArea from "../../components/MessageInputArea/MessageInputArea
 
 const Message = ({ userId }) => {
   const messages = [
-    { id: 1, sender: "User 1", text: "Hello!" },
-    { id: 2, sender: "User 2", text: "Hi, how are you?" },
-    { id: 3, sender: "User 1", text: "I'm good, thanks! And you?" },
+    { id: 1, sender: "User 1", text: "Hello!", time: "10:00 AM" },
+    { id: 2, sender: "User 2", text: "Hi, how are you?", time: "10:01 AM" },
+    {
+      id: 3,
+      sender: "User 1",
+      text: "I'm good, thanks! And you?",
+      time: "10:02 AM",
+    },
     // Add more messages as needed
   ];
 
@@ -17,12 +22,23 @@ const Message = ({ userId }) => {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`p-3 rounded-lg ${
-              message.sender === "User 1" ? "bg-blue-200" : "bg-gray-200"
+            className={`p-3 rounded-lg flex justify-between items-center ${
+              message.sender === "User 1"
+                ? "bg-blue-200 ml-auto"
+                : "bg-gray-200 mr-auto"
             }`}
+            style={{
+              maxWidth: "40%",
+              width: "fit-content",
+              wordWrap: "break-word",
+            }} // Set max width to 40% and adjust width
           >
-            <strong>{message.sender}: </strong>
-            {message.text}
+            <div className="flex-1">
+              {message.text} {/* Only display message text */}
+            </div>
+            <span className="text-sm text-gray-500 ml-2 items-baseline">
+              {message.time}
+            </span>
           </div>
         ))}
       </div>
