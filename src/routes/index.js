@@ -5,11 +5,14 @@ import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import ChatLayout from "../layout/ChatLayout";
 import Message from "../pages/Message/Message";
+import NotFound from "../pages/NotFound/NotFound";
+import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorBoundary />, 
     children: [
       {
         path: "register",
@@ -36,6 +39,10 @@ const router = createBrowserRouter([
             element: <Message />, // Use Home component for user-specific messages
           },
         ],
+      },
+      {
+        path: "*", // Catch-all route for unknown paths
+        element: <NotFound />, // Render NotFound component for unknown routes
       },
     ],
   },
