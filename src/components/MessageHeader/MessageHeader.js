@@ -2,8 +2,6 @@ import React from "react";
 import { AiOutlineEllipsis } from "react-icons/ai"; // Importing the three-dot icon from react-icons
 
 const MessageHeader = ({ userId }) => {
-  const userInitial = userId ? userId.charAt(0) : "?"; // Fallback if userId is undefined
-
   return (
     <header className="flex items-center justify-around p-4 bg-white shadow-md sticky top-0 z-10">
       <div className="flex items-center space-x-2">

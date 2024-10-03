@@ -35,7 +35,6 @@ const Register = () => {
 
     try {
       const response = await registerUser(formData);
-      console.log(response);
       toast.success(response.data.message || "Registration success");
       navigate("/login");
     } catch (error) {

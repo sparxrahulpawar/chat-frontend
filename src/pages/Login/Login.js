@@ -17,10 +17,9 @@ const Login = () => {
     console.log(userData);
     try {
       const response = await loginUser(userData);
-      console.log(response);
       localStorage.setItem("token", response.data.token);
       toast.success(response.message || "Login successful");
-      navigate("/");
+      navigate("/chat");
     } catch (error) {
       console.error("Failed to login user", error);
       toast.error(error.response?.data?.message || "Login Failed");

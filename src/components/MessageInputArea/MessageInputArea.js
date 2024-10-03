@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import {
   FaPaperPlane,
   FaPlus,
-  FaFileAlt,
-  FaPhotoVideo,
   FaSmile,
   FaMicrophone,
 } from "react-icons/fa";

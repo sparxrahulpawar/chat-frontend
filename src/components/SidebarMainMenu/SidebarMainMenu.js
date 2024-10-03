@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUser, FaCog, FaEnvelope } from "react-icons/fa"; // Import icons from react-icons
+import { FaUser, FaCog } from "react-icons/fa"; // Import icons from react-icons
 import { MdChat } from "react-icons/md";
 import { Tooltip } from "react-tooltip";
 

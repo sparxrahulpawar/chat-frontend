@@ -31,11 +31,6 @@ const Sidebar = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  // Filter users based on the search term
-  const filteredUsers = usersData.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
   return (
     <aside className="w-full md:w-1/4 lg:w-1/5 bg-gray-100 border-r shadow-lg h-screen overflow-y-auto">
       <div className="flex items-center justify-between p-5 bg-white shadow-sm">
