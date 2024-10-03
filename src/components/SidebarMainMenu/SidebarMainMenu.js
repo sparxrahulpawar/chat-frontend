@@ -1,7 +1,7 @@
 import React from "react";
 import { FaUser, FaCog, FaEnvelope } from "react-icons/fa"; // Import icons from react-icons
-import Tooltip from "../Tooltip/Tooltip";
 import { MdChat } from "react-icons/md";
+import { Tooltip } from "react-tooltip";
 
 const SidebarMainMenu = () => {
   return (
@@ -11,23 +11,32 @@ const SidebarMainMenu = () => {
       {/* Top Menu Items */}
       <div className="flex-grow flex flex-col justify-start">
         <div className="flex items-center mb-4">
-          <Tooltip text="message" position="right">
-            <MdChat className="text-2xl text-blue-500 cursor-pointer" />
-          </Tooltip>
+          <MdChat
+            className="text-2xl text-blue-500 cursor-pointer"
+            data-tooltip-id="chatTooltip"
+            data-tooltip-content="Chat"
+          />
+          <Tooltip id="chatTooltip" place="top-end" effect="solid" />
         </div>
         {/* Add more top menu items here */}
       </div>
       {/* Bottom Menu Items */}
       <div className="flex flex-col mb-2">
         <div className="flex items-center mb-4">
-          <Tooltip text="profile" position="right">
-            <FaUser className="text-2xl text-blue-500 cursor-pointer" />
-          </Tooltip>
+          <FaUser
+            className="text-2xl text-blue-500 cursor-pointer"
+            data-tooltip-id="userProfileTooltip"
+            data-tooltip-content="profile"
+          />
+          <Tooltip id="userProfileTooltip" place="top" effect="solid" />
         </div>
         <div className="flex items-center">
-          <Tooltip text="settins" position="right">
-            <FaCog className="text-2xl text-blue-500 cursor-pointer" />
-          </Tooltip>
+          <FaCog
+            className="text-2xl text-blue-500 cursor-pointer"
+            data-tooltip-id="settingsTooltip"
+            data-tooltip-content="Settings"
+          />
+          <Tooltip id="settingsTooltip" place="top" effect="solid" />
         </div>
       </div>
     </div>
