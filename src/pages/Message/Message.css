@@ -1,0 +1,30 @@
+/* Message.css */
+
+.bg-message-theme {
+  position: relative;
+  background-color: #fbf5ee; /* Base background color */
+  overflow: hidden; /* Ensure pseudo-elements don't overflow */
+}
+
+/* Create a dotted pattern using a pseudo-element */
+.bg-message-theme::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle, #ccc 10%, transparent 10%);
+  background-size: 20px 20px; /* Size of the dots */
+  opacity: 0.5; /* Adjust opacity as needed */
+  pointer-events: none; /* Ensure clicks go through */
+}
+
+/* Additional styling for the message bubbles */
+.bg-blue-200 {
+  background-color: #bbf7d0; /* Greenish background for sent messages */
+}
+
+.bg-gray-200 {
+  background-color: #e2e8f0; /* Light gray background for received messages */
+}
