@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { FaSyncAlt, FaEllipsisH } from "react-icons/fa"; // Import the necessary icons
+import { FaSyncAlt } from "react-icons/fa"; // Import the necessary icons
 import { Tooltip } from "react-tooltip";
 import ContactList from "../ContactList/ContactList";
 import SidebarSearch from "../SidebarSearch/SidebarSearch";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Sidebar = () => {
   const [searchTerm, setSearchTerm] = useState(""); // State for the search term
@@ -60,7 +61,7 @@ const Sidebar = () => {
             className="text-sm text-gray-500 cursor-pointer hover:text-blue-500"
           />
           <Tooltip id="refreshTooltip" place="top" effect="light" />
-          <FaEllipsisH className="text-sm text-gray-500 cursor-pointer hover:text-blue-500" />
+          <BsThreeDotsVertical className="text-sm text-gray-500 cursor-pointer hover:text-blue-500" />
         </div>
       </div>
       {/* Use SearchBar component */}
