@@ -75,6 +75,14 @@ const Login = () => {
                     </svg>
                     <span className="ml-">Log In</span>
                   </button>
+                  <p className="mt-4 text-xs text-gray-600 text-center">
+                    <a
+                      href="/forgot-password"
+                      className="border-b border-gray-500 border-dotted text-indigo-500"
+                    >
+                      Forgot your password?
+                    </a>
+                  </p>
                   <p className="mt-6 text-xs text-gray-600 text-center">
                     If you don't have an account, click on{" "}
                     <a

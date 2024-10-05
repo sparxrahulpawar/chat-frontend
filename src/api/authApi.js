@@ -29,3 +29,41 @@ export const loginUser = async (userData) => {
     throw error; // Handle error accordingly
   }
 };
+
+// Forgot Password API call Axios instance
+export const forgotPassword = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/auth/forgot-password",
+      userData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Failed to send otp user", error);
+    throw error; // Handle error accordingly
+  }
+};
+
+// Forgot Password API call Axios instance
+export const resetPassword = async (userData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/auth/reset-password",
+      userData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Failed to reset password user", error);
+    throw error; // Handle error accordingly
+  }
+};

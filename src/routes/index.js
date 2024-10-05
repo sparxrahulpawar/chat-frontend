@@ -7,6 +7,7 @@ import ChatLayout from "../layout/ChatLayout";
 import Message from "../pages/Message/Message";
 import NotFound from "../pages/NotFound/NotFound";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout>
             <Login />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "forgot-password",
+        element: (
+          <AuthLayout>
+            <ForgotPassword />
           </AuthLayout>
         ),
       },
