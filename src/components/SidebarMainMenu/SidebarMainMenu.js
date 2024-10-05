@@ -12,7 +12,7 @@ const SidebarMainMenu = () => {
       <div className="flex-grow flex flex-col justify-start">
         <div className="flex items-center mb-4">
           <MdChat
-            className="text-2xl text-blue-500 cursor-pointer"
+            className="text-2xl text-blue-500 cursor-pointer focus:outline-none"
             data-tooltip-id="chatTooltip"
             data-tooltip-content="Chat"
           />
@@ -24,7 +24,7 @@ const SidebarMainMenu = () => {
       <div className="flex flex-col mb-2">
         <div className="flex items-center mb-4">
           <FaUser
-            className="text-2xl text-blue-500 cursor-pointer"
+            className="text-2xl text-blue-500 cursor-pointer focus:outline-none"
             data-tooltip-id="userProfileTooltip"
             data-tooltip-content="profile"
           />
@@ -32,7 +32,7 @@ const SidebarMainMenu = () => {
         </div>
         <div className="flex items-center">
           <FaCog
-            className="text-2xl text-blue-500 cursor-pointer"
+            className="text-2xl text-blue-500 cursor-pointer focus:outline-none"
             data-tooltip-id="settingsTooltip"
             data-tooltip-content="Settings"
           />

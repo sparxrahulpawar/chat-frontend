@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import AuthLayout from "../layout/AuthLayout";
 import Register from "../pages/Register/Register";
@@ -12,8 +12,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorBoundary />, 
+    errorElement: <ErrorBoundary />,
     children: [
+      {
+        index: true, // This will match the root path "/"
+        element: <Navigate to="/login" />, // Redirect to login
+      },
       {
         path: "register",
         element: (

@@ -53,7 +53,7 @@ const Sidebar = () => {
           <FaSyncAlt
             data-tooltip-id="refreshTooltip"
             data-tooltip-content="Refresh"
-            className="text-sm text-gray-500 cursor-pointer hover:text-blue-500"
+            className="text-sm text-gray-500 cursor-pointer hover:text-blue-500 focus:outline-none"
           />
           <Tooltip id="refreshTooltip" place="top" effect="light" />
           <BsThreeDotsVertical className="text-sm text-gray-500 cursor-pointer hover:text-blue-500" />
