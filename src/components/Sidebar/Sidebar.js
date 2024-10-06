@@ -5,10 +5,12 @@ import ContactList from "../ContactList/ContactList";
 import SidebarSearch from "../SidebarSearch/SidebarSearch";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { getUsers } from "../../api/userApi";
+import { getUsernameFromToken } from "../../hooks/jwtDecode";
 
 const Sidebar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [usersData, setUsersData] = useState([]);
+  const [username, setUsername] = useState("");
   // const usersData = [
   //   {
   //     name: "Alice",
@@ -42,6 +44,11 @@ const Sidebar = () => {
 
   // Call the API when the component mounts
   useEffect(() => {
+    const getUsername = getUsernameFromToken();
+    if (getUsername) {
+      setUsername(getUsername);
+    }
+
     fetchUsers();
   }, []);
 
@@ -63,7 +70,7 @@ const Sidebar = () => {
             className="w-10 h-10 rounded-full cursor-pointer transform transition duration-500 hover:scale-125 hover:flex justify-center items-center" // Adjust the size and shape as needed
           />
           <span className="ml-2 font-semibold text-gray-700 text-sm">
-            User Name
+            {username}
           </span>
         </div>
         {/* Icons */}
