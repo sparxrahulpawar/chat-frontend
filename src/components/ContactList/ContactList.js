@@ -1,18 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ContactList = ({ users }) => {
+  console.log(users);
+  const navigate = useNavigate();
+
+  // Handle navigation when a user is clicked, passing username via state
+  const handleUserClick = (userId, username) =>
+    navigate(`/chat/${userId}`, { state: { username } });
+
   return (
     <ul className="p-3 space-y-2">
-      {users.map((user, index) => (
+      {users.map((user) => (
         <li
-          key={index}
+          key={user.id}
+          onClick={() => handleUserClick(user.id, user.username)}
           className="py-3 px-4 bg-white rounded-lg shadow-md hover:bg-blue-100 hover:shadow-lg transition-all duration-300 cursor-pointer"
         >
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-gray-700">
-              {user.name}
+              {user.username}
             </span>
-            {user.isTyping && (
+            {user?.isTyping && (
               <span className="text-xs text-green-600 italic">typing...</span>
             )}
           </div>

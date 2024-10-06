@@ -1,7 +1,7 @@
 import React from "react";
 import { AiOutlineEllipsis } from "react-icons/ai"; // Importing the three-dot icon from react-icons
 
-const MessageHeader = ({ userId }) => {
+const MessageHeader = ({ username }) => {
   return (
     <header className="flex items-center justify-around p-4 bg-white shadow-md sticky top-0 z-10">
       <div className="flex items-center space-x-2">
@@ -10,13 +10,15 @@ const MessageHeader = ({ userId }) => {
           {/* Use an image here */}
           <img
             src={`https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=mail@ashallendesign.co.uk`} // Example image URL; replace with your image source
-            // src={`https://api.adorable.io/avatars/285/${userId}.png`} // Example image URL; replace with your image source
-            alt={`${userId} avatar`}
+            // src={`https://api.adorable.io/avatars/285/${username}.png`} // Example image URL; replace with your image source
+            alt={`${username} avatar`}
             className="h-full w-full rounded-full"
           />
         </div>
         <div>
-          <h1 className="text-lg font-semibold">{userId || "Unknown User"}</h1>
+          <h1 className="text-lg font-semibold">
+            {username || "Unknown User"}
+          </h1>
           <p className="text-sm text-green-500">Online</p>
         </div>
       </div>

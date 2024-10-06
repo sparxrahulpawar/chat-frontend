@@ -1,32 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSyncAlt } from "react-icons/fa"; // Import the necessary icons
 import { Tooltip } from "react-tooltip";
 import ContactList from "../ContactList/ContactList";
 import SidebarSearch from "../SidebarSearch/SidebarSearch";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { getUsers } from "../../api/userApi";
 
 const Sidebar = () => {
-  const [searchTerm, setSearchTerm] = useState(""); // State for the search term
-  const usersData = [
-    {
-      name: "Alice",
-      lastMessage: "Hey, how are you?",
-      lastMessageTime: "10:30 AM",
-      isTyping: false,
-    },
-    {
-      name: "Bob",
-      lastMessage: "Let's meet tomorrow.",
-      lastMessageTime: "9:15 AM",
-      isTyping: false,
-    },
-    {
-      name: "Charlie",
-      lastMessage: "",
-      lastMessageTime: "",
-      isTyping: true,
-    },
-  ];
+  const [searchTerm, setSearchTerm] = useState("");
+  const [usersData, setUsersData] = useState([]);
+  // const usersData = [
+  //   {
+  //     name: "Alice",
+  //     lastMessage: "Hey, how are you?",
+  //     lastMessageTime: "10:30 AM",
+  //     isTyping: false,
+  //   },
+  //   {
+  //     name: "Bob",
+  //     lastMessage: "Let's meet tomorrow.",
+  //     lastMessageTime: "9:15 AM",
+  //     isTyping: false,
+  //   },
+  //   {
+  //     name: "Charlie",
+  //     lastMessage: "",
+  //     lastMessageTime: "",
+  //     isTyping: true,
+  //   },
+  // ];
+
+  // Function to fetch users from the API
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      setUsersData(response.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  // Call the API when the component mounts
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   // Function to handle search input change
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
