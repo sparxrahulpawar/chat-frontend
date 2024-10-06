@@ -56,6 +56,11 @@ const Sidebar = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  // Function to handle refresh button click
+  const handleRefreshClick = () => {
+    fetchUsers();
+  };
   return (
     <aside className="w-full md:w-1/4 lg:w-1/5 bg-gray-100 border-r shadow-lg h-screen overflow-y-auto">
       <div className="flex items-center justify-between p-5 bg-white shadow-sm">
@@ -76,6 +81,7 @@ const Sidebar = () => {
         {/* Icons */}
         <div className="flex items-center space-x-3">
           <FaSyncAlt
+            onClick={handleRefreshClick}
             data-tooltip-id="refreshTooltip"
             data-tooltip-content="Refresh"
             className="text-sm text-gray-500 cursor-pointer hover:text-blue-500 focus:outline-none"

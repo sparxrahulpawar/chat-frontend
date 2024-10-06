@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const ContactList = ({ users }) => {
-  console.log(users);
   const navigate = useNavigate();
 
   // Handle navigation when a user is clicked, passing username via state

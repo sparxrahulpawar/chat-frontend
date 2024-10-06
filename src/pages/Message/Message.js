@@ -17,7 +17,6 @@ const Message = () => {
   const fetchMessages = async () => {
     try {
       const response = await getMessagesByUserId(userId);
-      console.log(response);
       setMessages(response.messages);
     } catch (error) {
       console.error(error);
