@@ -28,7 +28,8 @@ const Message = () => {
 
     // Fetch saved messages when component mounts
     fetchSavedMessages(userId);
-  }, [userId, location.state, fetchSavedMessages]);
+    // eslint-disable-next-line
+  }, [userId, location.state]);
 
   return (
     <div className="flex flex-col h-screen bg-message-theme">
