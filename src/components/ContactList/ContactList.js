@@ -5,15 +5,15 @@ const ContactList = ({ users }) => {
   const navigate = useNavigate();
 
   // Handle navigation when a user is clicked, passing username via state
-  const handleUserClick = (userId, username) =>
-    navigate(`/chat/${userId}`, { state: { username } });
+  const handleUserClick = (user) =>
+    navigate(`/chat/${user.id}`, { state: { username:user.username } });
 
   return (
     <ul className="p-3 space-y-2">
       {users.map((user) => (
         <li
           key={user.id}
-          onClick={() => handleUserClick(user.id, user.username)}
+          onClick={() => handleUserClick(user)}
           className="py-3 px-4 bg-white rounded-lg shadow-md hover:bg-blue-100 hover:shadow-lg transition-all duration-300 cursor-pointer"
         >
           <div className="flex items-center justify-between">

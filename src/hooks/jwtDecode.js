@@ -5,7 +5,7 @@ export const getUsernameFromToken = () => {
   if (token) {
     try {
       const decoded = jwtDecode(token);
-      return decoded.username; // Adjust according to your token structure
+      return decoded; // Adjust according to your token structure
     } catch (error) {
       console.error("Error decoding token:", error);
       return null; // or return a default username

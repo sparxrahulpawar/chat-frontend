@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-import {
-  FaPaperPlane,
-  FaPlus,
-  FaSmile,
-  FaMicrophone,
-} from "react-icons/fa";
+import { FaPaperPlane, FaPlus, FaSmile, FaMicrophone } from "react-icons/fa";
 import IconButton from "./components/IconButton";
 import EmojiPicker from "./components/EmojiPicker";
 import OptionsMenu from "./components/OptionsMenu";
+import { useParams } from "react-router-dom";
 
-const MessageInputArea = () => {
+const MessageInputArea = ({ onSendMessage, senderId }) => {
   const [message, setMessage] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const { userId } = useParams();
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      console.log("Message sent:", message);
+      onSendMessage({
+        text: message,
+        receiverId: parseInt(userId), // Ensure receiverId is available or passed in as props
+        senderId: senderId,
+        createdAt: new Date().toISOString(), // Adjust as necessary
+      });
       setMessage(""); // Reset message input
     }
   };

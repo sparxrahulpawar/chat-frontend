@@ -46,7 +46,7 @@ const Sidebar = () => {
   useEffect(() => {
     const getUsername = getUsernameFromToken();
     if (getUsername) {
-      setUsername(getUsername);
+      setUsername(getUsername.username);
     }
 
     fetchUsers();

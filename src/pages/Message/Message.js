@@ -1,48 +1,44 @@
 import React, { useEffect, useState } from "react";
 import MessageHeader from "../../components/MessageHeader/MessageHeader";
 import MessageInputArea from "../../components/MessageInputArea/MessageInputArea";
-import "./Message.css"; // Import your CSS file for custom styles
+import "./Message.css";
 import { useLocation, useParams } from "react-router-dom";
-import { getMessagesByUserId } from "../../api/messageAPI";
-import toast from "react-hot-toast";
 import { formatTime } from "../../hooks/formatTime";
+import { getUsernameFromToken } from "../../hooks/jwtDecode";
+import { useSocket } from "../../context/SocketContext";
 
 const Message = () => {
   const { userId } = useParams();
   const location = useLocation();
+  const { messages, sendMessage, fetchSavedMessages } = useSocket(); // Get messages, sendMessage, and fetchSavedMessages from the context
 
-  const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState("");
+  const [senderId, setSenderId] = useState("");
 
-  const fetchMessages = async () => {
-    try {
-      const response = await getMessagesByUserId(userId);
-      setMessages(response.messages);
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response.data.message || "Internal server error");
-    }
-  };
   useEffect(() => {
-    const usernameParam = location.state?.username;
-
-    if (usernameParam) {
-      setUsername(usernameParam); // Set the username state if it exists
+    const senderData = getUsernameFromToken();
+    if (senderData) {
+      setSenderId(senderData.id);
     }
-    fetchMessages();
-  }, [userId, location.state]);
+
+    const usernameParam = location.state?.username;
+    if (usernameParam) {
+      setUsername(usernameParam);
+    }
+
+    // Fetch saved messages when component mounts
+    fetchSavedMessages(userId);
+  }, [userId, location.state, fetchSavedMessages]);
 
   return (
     <div className="flex flex-col h-screen bg-message-theme">
-      {" "}
-      {/* Use the theme class here */}
       <MessageHeader username={username} />
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`p-3 rounded-lg flex items-end ${
-              message.senderId === parseInt(userId)
+              message.senderId === parseInt(senderId)
                 ? "bg-blue-200 ml-auto"
                 : "bg-gray-200 mr-auto"
             }`}
@@ -59,7 +55,7 @@ const Message = () => {
           </div>
         ))}
       </div>
-      <MessageInputArea />
+      <MessageInputArea onSendMessage={sendMessage} senderId={senderId} />
     </div>
   );
 };
