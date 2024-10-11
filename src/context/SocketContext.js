@@ -1,69 +1,127 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { io } from "socket.io-client";
 import { getUsernameFromToken } from "../hooks/jwtDecode";
 import { getMessagesByUserId } from "../api/messageAPI";
+import debounce from "lodash.debounce";
 
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState([]); // Manage both saved and real-time messages
+  const [messages, setMessages] = useState([]);
+  const [userStatus, setUserStatus] = useState({});
+  const [typingStatus, setTypingStatus] = useState({});
+
+  const token = getUsernameFromToken();
+  const userId = token?.id;
 
   useEffect(() => {
-    // Initialize Socket.IO connection
-    const newSocket = io(process.env.REACT_APP_SOCKET_IO_BACKEND_BASE_URL);
+    if (userId) {
+      const newSocket = io(process.env.REACT_APP_SOCKET_IO_BACKEND_BASE_URL, {
+        reconnection: true, // Enables auto-reconnection if the connection drops
+        timeout: 5000, // Timeout for socket connection
+      });
 
-    newSocket.on("connect", () => {
-      console.log("Socket connected:", newSocket.id);
-      const token = getUsernameFromToken();
-      const userId = token.id; // Get the user ID from your authentication context or local storage
-      newSocket.emit("register_user", userId); // Register user after connecting
-    });
+      newSocket.on("connect", () => {
+        console.log("Socket connected:", newSocket.id);
+        newSocket.emit("register_user", userId);
+      });
 
-    newSocket.on("connect_error", (err) => {
-      console.error("Socket connection error:", err);
-    });
+      newSocket.on("disconnect", (reason) => {
+        console.log("Socket disconnected:", reason);
+      });
 
-    // Listen for real-time messages and add to the state
-    newSocket.on("receive_message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
+      newSocket.on("user_status", ({ userId, status, lastOnline }) => {
+        setUserStatus((prevStatus) => ({
+          ...prevStatus,
+          [userId]: { status, lastOnline },
+        }));
+      });
 
-    setSocket(newSocket);
+      newSocket.on("user_typing", ({ senderId }) => {
+        setTypingStatus((prevStatus) => ({ ...prevStatus, [senderId]: true }));
+      });
 
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+      newSocket.on("user_stop_typing", ({ senderId }) => {
+        setTypingStatus((prevStatus) => ({ ...prevStatus, [senderId]: false }));
+      });
 
-  // Fetch saved messages from the server for the selected user
-  const fetchSavedMessages = async (userId) => {
+      newSocket.on("receive_message", (message) => {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+
+      newSocket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
+      });
+
+      setSocket(newSocket);
+
+      return () => {
+        newSocket.off("connect");
+        newSocket.off("disconnect");
+        newSocket.off("user_status");
+        newSocket.off("user_typing");
+        newSocket.off("user_stop_typing");
+        newSocket.off("receive_message");
+        newSocket.off("connect_error");
+        newSocket.disconnect();
+      };
+    }
+  }, [userId]);
+
+  const fetchSavedMessages = useCallback(async (userId) => {
     try {
-      const response = await getMessagesByUserId(userId); // Fetch messages by userId
-      setMessages(response.messages); // Set saved messages in state
+      const response = await getMessagesByUserId(userId);
+      setMessages(response.messages);
     } catch (error) {
       console.error("Error fetching saved messages:", error);
     }
-  };
+  }, []);
 
-  // Function to send a message
   const sendMessage = (messageData) => {
     if (socket) {
-      socket.emit("send_message", messageData); // Send message via socket
-      setMessages((prevMessages) => [...prevMessages, messageData]); // Add sent message to state
+      socket.emit("send_message", messageData);
+      setMessages((prevMessages) => [...prevMessages, messageData]);
+    }
+  };
+
+  const handleTyping = debounce((receiverId) => {
+    if (socket) {
+      socket.emit("typing", { senderId: userId, receiverId });
+    }
+  }, 500); // Debouncing typing events to avoid rapid emissions
+
+  const handleStopTyping = (receiverId) => {
+    if (socket) {
+      socket.emit("stop_typing", {
+        senderId: userId,
+        receiverId,
+      });
     }
   };
 
   return (
     <SocketContext.Provider
-      value={{ socket, messages, sendMessage, fetchSavedMessages }}
+      value={{
+        socket,
+        messages,
+        sendMessage,
+        fetchSavedMessages,
+        userStatus,
+        typingStatus,
+        handleTyping,
+        handleStopTyping,
+      }}
     >
       {children}
     </SocketContext.Provider>
   );
 };
 
-// Hook to use the SocketContext
-export const useSocket = () => {
-  return useContext(SocketContext);
-};
+export const useSocket = () => useContext(SocketContext);

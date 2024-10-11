@@ -1,7 +1,10 @@
 import React from "react";
 import { AiOutlineEllipsis } from "react-icons/ai"; // Importing the three-dot icon from react-icons
+// import { formatTime } from "../../hooks/formatTime";
 
-const MessageHeader = ({ username }) => {
+const MessageHeader = ({ username, userStatus, userId }) => {
+  const userIsOnline = userStatus[userId]?.status === "online";
+
   return (
     <header className="flex items-center justify-around p-4 bg-white shadow-md sticky top-0 z-10">
       <div className="flex items-center space-x-2">
@@ -19,7 +22,15 @@ const MessageHeader = ({ username }) => {
           <h1 className="text-lg font-semibold">
             {username || "Unknown User"}
           </h1>
-          <p className="text-sm text-green-500">Online</p>
+          {/* Display user online/offline status */}
+          <p
+            className={`text-sm ${
+              userIsOnline ? "text-green-500" : "text-gray-500"
+            }`}
+          >
+            {/* {userIsOnline ? "Online" : `Offline (Last seen: ${formatTime(userStatus[userId]?.lastOnline)})`} */}
+            {userIsOnline ? "Online" : `Offline`}
+          </p>
         </div>
       </div>
 

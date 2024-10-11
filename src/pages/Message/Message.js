@@ -10,7 +10,7 @@ import { useSocket } from "../../context/SocketContext";
 const Message = () => {
   const { userId } = useParams();
   const location = useLocation();
-  const { messages, sendMessage, fetchSavedMessages } = useSocket(); // Get messages, sendMessage, and fetchSavedMessages from the context
+  const { messages, sendMessage, fetchSavedMessages, userStatus } = useSocket(); // Get messages, sendMessage, and fetchSavedMessages from the context
 
   const [username, setUsername] = useState("");
   const [senderId, setSenderId] = useState("");
@@ -33,7 +33,11 @@ const Message = () => {
 
   return (
     <div className="flex flex-col h-screen bg-message-theme">
-      <MessageHeader username={username} />
+      <MessageHeader
+        username={username}
+        userStatus={userStatus}
+        userId={userId}
+      />
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
         {messages.map((message) => (
           <div
